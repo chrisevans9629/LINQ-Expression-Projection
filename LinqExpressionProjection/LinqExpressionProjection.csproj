@@ -1,5 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Chris Evans</Authors>
+    <Company>Peerless Products</Company>
+    <Description>Follows the dry principle by making it easier to reuse linq expressions for EntityFramework.</Description>
+    <PackageId>Linq-Expression-Projection</PackageId>
+    <PackageLicenseFile>README.md</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/chrisevans9629/LINQ-Expression-Projection</PackageProjectUrl>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 </Project>
