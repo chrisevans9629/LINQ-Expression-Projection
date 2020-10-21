@@ -35,7 +35,7 @@ namespace LinqExpressionProjection.Test
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotSupportedException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void ProjectingExpressionFailsOnNormalCases_Test()
         {
             ValidateDb();
@@ -53,7 +53,7 @@ namespace LinqExpressionProjection.Test
         }
 
         [TestMethod]
-        [ExpectedException(typeof(NotSupportedException))]
+        [ExpectedException(typeof(InvalidOperationException))]
         public void ProjectingExpressionFailsWithNoCallToAsExpressionProjectable_Test()
         {
             ValidateDb();
@@ -234,6 +234,7 @@ namespace LinqExpressionProjection.Test
             {
                 try
                 {
+                    ctx.Database.EnsureCreated();
                     if (ctx.Projects.Count() != 2 || ctx.Subprojects.Count() != 5)
                     {
                         ClearDb();
@@ -274,8 +275,8 @@ namespace LinqExpressionProjection.Test
         {
             using (var ctx = new ProjectsDbContext())
             {
-                Project p1 = ctx.Projects.Add(new Project());
-                Project p2 = ctx.Projects.Add(new Project());
+                Project p1 = ctx.Projects.Add(new Project()).Entity;
+                Project p2 = ctx.Projects.Add(new Project()).Entity;
 
                 ctx.Subprojects.Add(new Subproject() { Area = 100, Project = p1 });
                 ctx.Subprojects.Add(new Subproject() { Area = 200, Project = p1 });
