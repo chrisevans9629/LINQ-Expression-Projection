@@ -73,6 +73,8 @@ namespace LinqExpressionProjection
             try
             {
                 Expression<Func<LambdaExpression>> executionLambda = Expression.Lambda<Func<LambdaExpression>>(projectionExpression);
+                //TODO: this needs to handle parameters that are not in global scope
+                
                 LambdaExpression extractedLambda = executionLambda.Compile().Invoke();
                 if (extractedLambda != null
                     && extractedLambda.Parameters[0].Type == parameterType

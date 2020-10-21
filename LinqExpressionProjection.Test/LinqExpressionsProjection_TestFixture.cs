@@ -131,6 +131,46 @@ namespace LinqExpressionProjection.Test
             }
         }
 
+        Expression<Func<Project, double>> localSelector(int i) =>
+                proj => proj.Subprojects.Where(sp => sp.Area < i).Average(sp => sp.Area);
+
+        [TestMethod]
+        public void ProjectingExpressionByParameterizedLocalVariable_Test()
+        {
+            ValidateDb();
+            
+            using (var ctx = new ProjectsDbContext())
+            {
+                var projects = (from p in ctx.Projects.AsExpressionProjectable()
+                                select new
+                                {
+                                    Project = p,
+                                    AEA = localSelector(1000).Project<double>()
+                                }).ToArray();
+                Assert.AreEqual(150, projects[0].AEA);
+                Assert.AreEqual(400, projects[1].AEA);
+            }
+        }
+
+        [TestMethod]
+        public void ProjectingExpressionByParameterizedInternalVariable_Test()
+        {
+            ValidateDb();
+
+            using (var ctx = new ProjectsDbContext())
+            {
+                var projects = (from p in ctx.Projects.AsExpressionProjectable()
+                                select new
+                                {
+                                    Project = p,
+                                    AEA = localSelector(p.ID).Project<double>()
+                                }).ToArray();
+                Assert.AreEqual(150, projects[0].AEA);
+                Assert.AreEqual(400, projects[1].AEA);
+            }
+        }
+
+
         [TestMethod]
         public void ProjectingExpressionByStaticField_Test()
         {
